@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Word 自动填充</title>
+</head>
+<body>
+
+<h2>Word 文档自动填充</h2>
+
+<input type="file" id="file">
+<br><br>
+
+<textarea id="message" rows="6" cols="50">
+First Name is Jean
+Last Name is Huan
+Company Name is SwissUnicorn
+Date is 2025-01-10
+</textarea>
+<br><br>
+
+<button onclick="submitForm()">生成文档</button>
+
+<script>
+async function submitForm() {
+    const fileInput = document.getElementById("file");
+    const messageInput = document.getElementById("message");
+
+    if (!fileInput.files.length) {
+        alert("请选择 Word 文件");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+    formData.append("message", messageInput.value);
+
+    const response = await fetch("/api/upload-and-fill", {
+        method: "POST",
+        body: formData
+    });
+
+    if (!response.ok) {
+        alert("服务器错误：" + response.status);
+        return;
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "filled_document.docx";
+    a.click();
+}
+</script>
+
+</body>
+</html>
