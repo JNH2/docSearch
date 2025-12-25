@@ -1,4 +1,4 @@
-from docx import Document   # ✅ 必须有
+from docx import Document   
 
 def replace_in_paragraph(paragraph, data: dict):
     """
@@ -17,16 +17,16 @@ def fill_word_template(template_path: str, output_path: str, data: dict):
     """
     doc = Document(template_path)
 
-    # 1. Normal paragraphs
+    
     for paragraph in doc.paragraphs:
         replace_in_paragraph(paragraph, data)
 
-    # 2. Tables (VERY IMPORTANT)
+
     for table in doc.tables:
         for row in table.rows:
             for cell in row.cells:
                 for paragraph in cell.paragraphs:
                     replace_in_paragraph(paragraph, data)
 
-    # 3. Save
+    
     doc.save(output_path)
