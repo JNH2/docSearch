@@ -28,14 +28,14 @@ async def upload_and_fill(
     template_path = f"{uuid.uuid4()}_template.docx"
     output_path = f"{uuid.uuid4()}_output.docx"
 
-    # Save uploaded document
+    
     with open(template_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
-    # Parse chat content
+    
     data = parse_message(message)
 
-    # Fill Word document
+    
     fill_word_template(template_path, output_path, data)
 
     return FileResponse(
@@ -45,9 +45,6 @@ async def upload_and_fill(
     )
 
 
-# ================================
-# Serve frontend (ONLY ONCE)
-# ================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app.mount(
